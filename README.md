@@ -1,5 +1,3 @@
----
-
 This is a fork of: https://github.com/ChatSift/ModMail 
 
 In accordance with the project's GNU AGPLv3 license, the following is a list of changes that were implemented:
@@ -7,8 +5,6 @@ In accordance with the project's GNU AGPLv3 license, the following is a list of 
 - Adjusted docker-compose to work with M1 Silicon Chip
 - Added a requirement that initial messages have more than 5 words 
 - Added a system whereby snippets that have the same name as forum tags lead to the thread being automatically closed with the content of the snippet being sent
-
---- 
 
 # modmail
 
