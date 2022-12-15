@@ -1,4 +1,4 @@
-import type { Client } from 'discord.js';
+import { ActivityType, Client } from 'discord.js';
 import { Events } from 'discord.js';
 import { singleton } from 'tsyringe';
 import type { Event } from '#struct/Event';
@@ -13,6 +13,12 @@ export default class implements Event<typeof Events.ClientReady> {
 
 	public async handle(client: Client<true>) {
 		logger.info(`Ready as ${client.user.tag} (${client.user.id})`);
+        client.user.setPresence({
+                activities: [
+                    { name: `for your DMs`, type: ActivityType.Watching }
+                ],
+                status: 'online'
+        });
 		await this.jobManager.register();
 		await this.jobManager.start();
 	}
