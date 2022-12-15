@@ -63,7 +63,7 @@ const promptTags = async (
 		return null;
 	}
 
-	const selectMenu = await prompt.awaitMessageComponent({ idle: 30_000, componentType: ComponentType.SelectMenu });
+	const selectMenu = await prompt.awaitMessageComponent({ idle: 30_000, componentType: ComponentType.SelectMenu }).catch(() => null);
 
 	if (!selectMenu) {
 		await prompt.edit({
@@ -214,6 +214,9 @@ export async function openThread(
 		let tag: GuildForumTag | null = null;
 		if (tags.length > 0) {
 			tag = await promptTags(input, tags);
+		}
+		if (!tag) {
+			return send('**Error:** Your session timed out. Send a new message to continue using Modmail.');
 		}
 
 		const generateFarewellEmbed = (description: string) =>  new EmbedBuilder()
