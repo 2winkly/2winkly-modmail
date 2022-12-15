@@ -216,7 +216,7 @@ export async function openThread(
 			tag = await promptTags(input, tags);
 		}
 		if (!tag) {
-			return send('**Error:** Your session timed out. Send a new message to continue using Modmail.');
+			return send('**Error:** You did not select a category from the dropdown, so your message was not sent. Send a new message to continue using Modmail.');
 		}
 
 		const generateFarewellEmbed = (description: string) =>  new EmbedBuilder()
