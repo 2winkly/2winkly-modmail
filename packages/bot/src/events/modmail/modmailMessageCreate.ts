@@ -13,6 +13,7 @@ import { getUserGuilds } from '#util/getUserGuilds';
 import { openThread } from '#util/handleThreadManagement';
 import { sendMemberThreadMessage } from '#util/sendMemberThreadMessage';
 import { templateDataFromMember, templateString } from '#util/templateString';
+import { container } from 'tsyringe';
 
 @singleton()
 export default class implements Event<typeof Events.MessageCreate> {
@@ -124,7 +125,16 @@ export default class implements Event<typeof Events.MessageCreate> {
 			return;
 		}
 
-		if (message?.content?.split(' ')?.length < 5){
+		const prisma = container.resolve(PrismaClient);
+		const existingThread = await prisma.thread.findFirst({
+			where: {
+				guildId: guild.id,
+				userId: message.author.id,
+				closedById: null,
+			},
+		});	
+
+		if (message?.content?.split(' ')?.length < 5 && !existingThread){
 			const errorMessage = '**Error:** Your message must be at least 5 words. To assist you better, please provide more information about your issue.\n\nMessages that are not genuine inquiries may result in account sanctions.'
 			const errorEmbed = new EmbedBuilder()
 			.setAuthor({
