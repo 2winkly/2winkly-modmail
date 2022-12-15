@@ -16,6 +16,7 @@ services:
       test: ['CMD-SHELL', 'pg_isready -U modmail']
       interval: 10s
       timeout: 5s
+    platform: linux/arm64/v8
 
   bot:
     image: chatsift/modmail
@@ -31,6 +32,7 @@ services:
       - ./logs:/usr/modmail/logs
     depends_on:
       - postgres
+    platform: linux/amd64
     command:
       [
         'node',

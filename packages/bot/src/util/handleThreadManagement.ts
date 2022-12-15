@@ -2,10 +2,13 @@
 import { type GuildSettings, PrismaClient, type Thread } from '@prisma/client';
 import type {
 	AnyThreadChannel,
+	APIEmbed,
 	ContextMenuCommandInteraction,
 	ForumChannel,
 	GuildForumTag,
 	GuildForumThreadCreateOptions,
+	InteractionResponse,
+	JSONEncodable,
 	MessageCreateOptions,
 	TextChannel,
 	ThreadChannel,
@@ -29,6 +32,7 @@ import {
 } from 'discord.js';
 import i18next from 'i18next';
 import { container } from 'tsyringe';
+import { logger } from '#util/logger';
 import { getSortedMemberRolesString } from './getSortedMemberRoles';
 
 const promptTags = async (
@@ -49,7 +53,7 @@ const promptTags = async (
 	);
 
 	const options = {
-		content: i18next.t('thread.tag_prompt'),
+		content: 'Please select one of the options below so that we can best assist you.',
 		components: [actionRow],
 	};
 
@@ -92,7 +96,7 @@ export function openThread(input: Message<false>, definedGuild: Guild): Promise<
 export async function openThread(
 	input: ChatInputCommandInteraction<'cached'> | Message<false> | UserContextMenuCommandInteraction<'cached'>,
 	definedGuild?: Guild,
-): Promise<Message | MessageOpenThreadReturn> {
+): Promise<Message | InteractionResponse | MessageOpenThreadReturn> {
 	const prisma = container.resolve(PrismaClient);
 	const client = container.resolve(Client);
 	const isMessage = input instanceof Message;
@@ -101,6 +105,11 @@ export async function openThread(
 	const send = isMessage
 		? async (key: string) => input.channel.send(i18next.t(key, { lng: guild.preferredLocale }))
 		: async (key: string) => input.reply(i18next.t(key, { lng: input.locale }));
+
+	const sendEmbed = isMessage
+		? async (embed: APIEmbed | JSONEncodable<APIEmbed>) => input.channel.send({embeds: [embed]})
+		: async (embed: APIEmbed | JSONEncodable<APIEmbed>) => input.reply({embeds: [embed]});
+
 	const user =
 		'targetUser' in input ? input.targetUser : isMessage ? input.author : input.options.getUser('user', true);
 
@@ -198,12 +207,29 @@ export async function openThread(
 		});
 	}
 
+
 	let startMessageOptions: GuildForumThreadCreateOptions | MessageCreateOptions;
 	if (modmail.type === ChannelType.GuildForum) {
 		const tags = modmail.availableTags.filter((tag) => !tag.moderated);
 		let tag: GuildForumTag | null = null;
 		if (tags.length > 0) {
 			tag = await promptTags(input, tags);
+		}
+
+		const generateFarewellEmbed = (description: string) =>  new EmbedBuilder()
+		.setAuthor({
+			name: `${guild.name}`,
+			iconURL: guild.iconURL() ?? undefined,
+		})
+		.setDescription(description)
+		.setColor(Colors.NotQuiteBlack);
+		
+		const snippets = await prisma.snippet.findMany({ where: { guildId: guild.id } });
+		const matchingSnippet = snippets.find(s=>s.name.replace(/-/g, ` `)===tag?.name?.toLowerCase().replace(/[^\w\d]/g, ` `));
+
+		if (matchingSnippet !== undefined) {
+			const errorEmbed = generateFarewellEmbed(matchingSnippet.content);
+			return sendEmbed(errorEmbed);
 		}
 
 		startMessageOptions = {

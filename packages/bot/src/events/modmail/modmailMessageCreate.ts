@@ -117,14 +117,23 @@ export default class implements Event<typeof Events.MessageCreate> {
 			return;
 		}
 
-		const guilds = await getUserGuilds(message.author.id);
-		if (!guilds.size) {
+		const guild = (await getUserGuilds(message.author.id)).first();
+
+		if (guild === undefined) {
 			await message.channel.send(i18next.t('common.errors.no_guilds'));
 			return;
 		}
 
-		const guild = guilds.size === 1 ? guilds.first() : await this.promptUser(message, guilds);
-		if (!guild) {
+		if (message?.content?.split(' ')?.length < 5){
+			const errorMessage = '**Error:** Your message must be at least 5 words. To assist you better, please provide more information about your issue.\n\nMessages that are not genuine inquiries may result in account sanctions.'
+			const errorEmbed = new EmbedBuilder()
+			.setAuthor({
+				name: `${guild.name} - Notice`,
+				iconURL: guild.iconURL() ?? undefined,
+			})
+			.setDescription(errorMessage)
+			.setColor(Colors.NotQuiteBlack);
+			await message.channel.send({embeds: [errorEmbed]})
 			return;
 		}
 
