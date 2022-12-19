@@ -51,8 +51,9 @@ migrations.
 
 ## Contributing/working on the project
 
-Just about everything above, except set the `NODE_ENV` env var to `dev`. If you're trying to
-figure out something wrong with cron jobs, `DEBUG_JOBS=true`.
+- Set `NODE_ENV` env var to `dev`
+	- If you're trying to figure out something wrong with cron jobs, `DEBUG_JOBS=true`.
+- Forum thread titles default to DM content
 
 ## Licensing
 
