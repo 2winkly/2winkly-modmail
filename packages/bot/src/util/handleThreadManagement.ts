@@ -235,8 +235,12 @@ export async function openThread(
 			return sendEmbed(errorEmbed);
 		}
 
+		let name = `${member.user.username}-${member.user.discriminator}`;
+		if (input instanceof Message) // max length 100
+			name = input.content.substr(0, 97).trim() + (input.content.length > 97 ? '...' : '');
+
 		startMessageOptions = {
-			name: `${member.user.username}-${member.user.discriminator}`,
+			name: name,
 			message: { embeds: [embed] },
 			appliedTags: tag ? [tag.id] : [],
 		};
