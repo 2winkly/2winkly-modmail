@@ -9,6 +9,8 @@ export class Env {
 
 	public readonly discordClientId: string = process.env.DISCORD_CLIENT_ID!;
 
+	public readonly logChannelId: string = process.env.LOG_CHANNEL_ID!;
+
 	public readonly isProd = process.env.NODE_ENV === 'prod';
 
 	public readonly cors = process.env.CORS?.split(',') ?? [];

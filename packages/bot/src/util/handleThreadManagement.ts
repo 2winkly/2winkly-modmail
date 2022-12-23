@@ -34,6 +34,8 @@ import i18next from 'i18next';
 import { container } from 'tsyringe';
 import { logger } from '#util/logger';
 import { getSortedMemberRolesString } from './getSortedMemberRoles';
+import { Env } from '#struct/Env';
+const env = container.resolve(Env);
 
 const promptTags = async (
 	input: ChatInputCommandInteraction | ContextMenuCommandInteraction | Message,
@@ -232,6 +234,21 @@ export async function openThread(
 
 		if (matchingSnippet !== undefined) {
 			const errorEmbed = generateFarewellEmbed(matchingSnippet.content);
+			const logChannel = await guild.channels.fetch(env.logChannelId);
+			if (logChannel && logChannel.type === ChannelType.GuildText){
+				logChannel.send({embeds: [
+					generateFarewellEmbed(matchingSnippet.content).setTitle('User Redirected to Support')
+						.addFields({
+							name: 'Dropdown Option',
+							value: tag.name.toLowerCase(),
+							},
+							{
+								name: 'Author',
+								value: user.toString()
+							})
+						]}
+					).catch(() => logger.warn(`Error Posting to Log Channel (${logChannel.id})`));
+			}
 			return sendEmbed(errorEmbed);
 		}
 

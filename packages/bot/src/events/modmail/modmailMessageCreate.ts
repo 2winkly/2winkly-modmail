@@ -1,7 +1,7 @@
 import { setTimeout } from 'node:timers';
 import { PrismaClient } from '@prisma/client';
 import { AsyncQueue } from '@sapphire/async-queue';
-import type { Collection, ComponentType, Guild, Message, MessageCreateOptions, SelectMenuBuilder } from 'discord.js';
+import { ChannelType, Collection, ComponentType, Guild, GuildChannel, Message, MessageCreateOptions, SelectMenuBuilder } from 'discord.js';
 import { ActionRowBuilder, bold, Client, Colors, EmbedBuilder, Events, SelectMenuOptionBuilder } from 'discord.js';
 import i18next from 'i18next';
 import { singleton } from 'tsyringe';
@@ -14,6 +14,8 @@ import { openThread } from '#util/handleThreadManagement';
 import { sendMemberThreadMessage } from '#util/sendMemberThreadMessage';
 import { templateDataFromMember, templateString } from '#util/templateString';
 import { container } from 'tsyringe';
+import { Env } from '#struct/Env';
+const env = container.resolve(Env);
 
 @singleton()
 export default class implements Event<typeof Events.MessageCreate> {
@@ -143,7 +145,22 @@ export default class implements Event<typeof Events.MessageCreate> {
 			})
 			.setDescription(errorMessage)
 			.setColor(Colors.NotQuiteBlack);
-			await message.channel.send({embeds: [errorEmbed]})
+			await message.channel.send({embeds: [errorEmbed]});
+			
+			// Logs
+			const logChannel = await guild.channels.fetch(env.logChannelId);
+			if (logChannel && logChannel.type === ChannelType.GuildText){
+				errorEmbed.setTitle('Direct Message Held')
+				.addFields({
+					name: 'Content',
+					value: message.content,
+					},
+					{
+						name: 'Author',
+						value: message.author.toString()
+					})
+				logChannel.send({embeds: [errorEmbed]}).catch(() => logger.warn(`Error Posting to Log Channel (${logChannel.id})`));
+			}
 			return;
 		}
 
