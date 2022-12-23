@@ -240,10 +240,10 @@ export async function openThread(
 					generateFarewellEmbed(matchingSnippet.content).setTitle('User Redirected to Support')
 						.addFields({
 							name: 'Dropdown Option',
-							value: tag.name.toLowerCase(),
+							value: tag.name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' '),
 							},
 							{
-								name: 'Author',
+								name: 'User',
 								value: user.toString()
 							})
 						]}
