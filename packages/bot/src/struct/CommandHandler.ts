@@ -290,7 +290,7 @@ export class CommandHandler {
 			channel: interaction.channel as ThreadChannel,
 			threadId: thread.threadId,
 			simpleMode: settings?.simpleMode ?? false,
-			anon: anon ?? false,
+			anon: anon ?? true,
 			interaction,
 		});
 

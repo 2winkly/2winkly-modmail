@@ -49,7 +49,7 @@ export async function handleStaffThreadMessage(
 	options.member = member;
 
 	if (action === HandleStaffThreadMessageAction.Reply) {
-		options.anon = interaction.options.getBoolean('anon') ?? false;
+		options.anon = interaction.options.getBoolean('anon') ?? true;
 		options.attachment = attachment;
 	} else {
 		const id = interaction.options.getInteger('id', true);

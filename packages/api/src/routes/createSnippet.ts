@@ -60,7 +60,7 @@ export default class extends Route<Snippet, Body> {
 			options: [
 				{
 					name: 'anon',
-					description: 'Whether or not to send the message as anonymous - defaults to false',
+					description: 'Whether or not to send the message as anonymous - defaults to true',
 					type: ApplicationCommandOptionType.Boolean,
 				},
 			],
