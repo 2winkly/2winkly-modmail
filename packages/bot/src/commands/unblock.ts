@@ -62,6 +62,9 @@ export default class implements Command<ApplicationCommandType.ChatInput> {
 					},
 				},
 			});
+
+			user.send('You have been unblocked.');
+
 			return await interaction.reply({ content: i18next.t('common.success.unblocked', { lng: interaction.locale }) });
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === PrismaError.RecordsNotFound) {

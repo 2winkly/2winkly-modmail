@@ -225,7 +225,14 @@
 				"duration": {
 					"name": "duration",
 					"description": "How long this user should be blocked for"
+				},
+				"reason": {
+					"name": "reason",
+					"description": "Why should this user be blocked?"
 				}
+			},
+			"errors": {
+				"reason_required": "You need to provide a reason to block"
 			}
 		},
 		"unblock": {

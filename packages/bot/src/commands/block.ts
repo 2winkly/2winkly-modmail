@@ -22,11 +22,17 @@ export default class implements Command<ApplicationCommandType.ChatInput> {
 		dm_permission: false,
 		options: [
 			{
+				...getLocalizedProp('name', 'commands.block.options.reason.name'),
+				...getLocalizedProp('description', 'commands.block.options.reason.description'),
+				type: ApplicationCommandOptionType.String,
+				autocomplete: false,
+			},
+			{
 				...getLocalizedProp('name', 'commands.block.options.duration.name'),
 				...getLocalizedProp('description', 'commands.block.options.duration.description'),
 				type: ApplicationCommandOptionType.String,
 				autocomplete: true,
-			},
+			}
 		],
 	};
 
@@ -45,6 +51,11 @@ export default class implements Command<ApplicationCommandType.ChatInput> {
 		});
 		if (!thread) {
 			return interaction.reply(i18next.t('common.errors.no_thread'));
+		}
+
+		const blockReason = interaction.options.getString('reason');
+		if (!blockReason) {
+			return interaction.reply(i18next.t('commands.block.errors.reason_required', { lng: interaction.locale }));
 		}
 
 		const rawTime = interaction.options.getString('duration');
@@ -75,7 +86,9 @@ export default class implements Command<ApplicationCommandType.ChatInput> {
 			guildId: interaction.guild.id,
 			userId: user.id,
 		};
-		const expiresAt = time ? new Date(Date.now() + time) : undefined;
+
+		const expiresTimestamp = time ? Date.now() + time : undefined;
+		const expiresAt = expiresTimestamp ? new Date(expiresTimestamp) : undefined;
 
 		await this.prisma.block.upsert({
 			create: {
@@ -85,6 +98,9 @@ export default class implements Command<ApplicationCommandType.ChatInput> {
 			update: { expiresAt },
 			where: { userId_guildId: base },
 		});
+
+		const expiresMarkdown = expiresTimestamp ? `<t:${Math.floor(expiresTimestamp/1000)}:R>` : 'never';
+		user.send(`You have been blocked.\nReason: ${blockReason}\nBlock expires: ${expiresMarkdown}`);
 
 		return interaction.reply(i18next.t('common.success.blocked', { lng: interaction.locale }));
 	}
