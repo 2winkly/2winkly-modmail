@@ -100,7 +100,9 @@ export default class implements Command<ApplicationCommandType.ChatInput> {
 		});
 
 		const expiresMarkdown = expiresTimestamp ? `<t:${Math.floor(expiresTimestamp/1000)}:R>` : 'never';
-		user.send(`You have been blocked.\nReason: ${blockReason}\nBlock expires: ${expiresMarkdown}`);
+		user.send(i18next.t('commands.block.recipient_message', { lng: interaction.locale })
+			.replace('{{ reason }}', blockReason)
+			.replace('{{ expires }}', expiresMarkdown));
 
 		return interaction.reply(i18next.t('common.success.blocked', { lng: interaction.locale }));
 	}

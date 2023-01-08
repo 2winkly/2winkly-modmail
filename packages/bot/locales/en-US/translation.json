@@ -233,7 +233,8 @@
 			},
 			"errors": {
 				"reason_required": "You need to provide a reason to block"
-			}
+			},
+			"recipient_message": "You have been blocked from using Modmail.\nReason: {{ reason }}\nBlock expires: {{ expires }}"
 		},
 		"unblock": {
 			"name": "unblock",
@@ -243,7 +244,8 @@
 					"name": "user",
 					"description": "The user to unblock"
 				}
-			}
+			},
+			"recipient_message": "You have been unblocked from using Modmail."
 		},
 		"alert": {
 			"name": "alert",
