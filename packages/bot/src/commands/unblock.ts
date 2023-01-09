@@ -63,7 +63,7 @@ export default class implements Command<ApplicationCommandType.ChatInput> {
 				},
 			});
 
-			user.send(i18next.t('commands.unblock.recipient_message', { lng: interaction.locale }));
+			user.send(i18next.t('commands.unblock.recipient_message', { lng: interaction.locale })).catch(console.log);
 
 			return await interaction.reply({ content: i18next.t('common.success.unblocked', { lng: interaction.locale }) });
 		} catch (error) {
