@@ -150,16 +150,18 @@ export default class implements Event<typeof Events.MessageCreate> {
 			// Logs
 			const logChannel = await guild.channels.fetch(env.logChannelId);
 			if (logChannel && logChannel.type === ChannelType.GuildText){
-				errorEmbed.setTitle('Direct Message Held')
-				.addFields({
-					name: 'Content',
-					value: message.content.substring(0,1024).trim() || 'N/A',
-					},
-					{
-						name: 'Author',
-						value: message.author.toString()
-					})
-				logChannel.send({embeds: [errorEmbed]}).catch(() => logger.warn(`Error Posting to Log Channel (${logChannel.id})`));
+				try { 
+					errorEmbed.setTitle('Direct Message Held')
+					.addFields({
+						name: 'Content',
+						value: message.content.substring(0,1024).trim() || 'N/A',
+						},
+						{
+							name: 'Author',
+							value: message.author.toString()
+						})
+					logChannel.send({embeds: [errorEmbed]}).catch(() => logger.warn(`Error Posting to Log Channel (${logChannel.id})`));
+				} catch(e) {}
 			}
 			return;
 		}
