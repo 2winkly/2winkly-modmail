@@ -153,7 +153,7 @@ export default class implements Event<typeof Events.MessageCreate> {
 				errorEmbed.setTitle('Direct Message Held')
 				.addFields({
 					name: 'Content',
-					value: message.content,
+					value: message.content.substring(0,1024),
 					},
 					{
 						name: 'Author',
