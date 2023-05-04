@@ -70,12 +70,12 @@
 		},
 		"greeting": {
 			"embed": {
-				"author": "{{- guild }} Team - Greeting"
+				"author": "Server Moderators - Greeting"
 			}
 		},
 		"farewell": {
 			"embed": {
-				"author": "{{- guild }} Team - Farewell"
+				"author": "Server Moderators - Farewell"
 			}
 		}
 	},

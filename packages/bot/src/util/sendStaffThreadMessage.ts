@@ -51,7 +51,7 @@ export async function sendStaffThreadMessage({
 		options.content = `${bold(
 			`${existing ? `${inlineCode(existing.replyId.toString())} ` : ''}${anon ? '(Anonymous) ' : ''}(${
 				staff.guild.name
-			} Team) ${staff.user.tag}:`,
+			} Team) Server Moderators:`,
 		)} ${content}`;
 		if (attachment) {
 			options.files = [attachment];
@@ -71,7 +71,7 @@ export async function sendStaffThreadMessage({
 
 		if (anon) {
 			embed.setAuthor({
-				name: `${staff.guild.name} Team`,
+				name: "Server Moderators",
 				iconURL: staff.guild.iconURL() ?? undefined,
 			});
 		}
@@ -91,7 +91,7 @@ export async function sendStaffThreadMessage({
 	if (anon) {
 		if (simpleMode) {
 			userOptions.content = `${bold(
-				`${existing ? `${inlineCode(existing.replyId.toString())} ` : ''}(Anonymous) ${staff.guild.name} Team:`,
+				`${existing ? `${inlineCode(existing.replyId.toString())} ` : ''}(Anonymous) Server Moderators:`,
 			)} ${content}`;
 		} else {
 			const [embed] = userOptions.embeds as [EmbedBuilder];
