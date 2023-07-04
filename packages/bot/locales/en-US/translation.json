@@ -168,7 +168,7 @@
 				},
 				"silent": {
 					"name": "silent",
-					"description": "Whether or not to send the farewell message to the user - defaults to true"
+					"description": "Whether or not to send the farewell message to the user - defaults to false"
 				},
 				"cancel": {
 					"name": "cancel",
