@@ -201,6 +201,8 @@ export default class implements Event<typeof Events.MessageCreate> {
 				return;
 			}
 
+			await message.react('✅');
+
 			if (settings.greetingMessage) {
 				const options: MessageCreateOptions = { allowedMentions: { roles: [] } };
 				const templateData = templateDataFromMember(member);
