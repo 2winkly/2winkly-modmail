@@ -144,7 +144,7 @@ export default class implements Event<typeof Events.MessageCreate> {
 				iconURL: guild.iconURL() ?? undefined,
 			})
 			.setDescription(errorMessage)
-			.setColor("#2b2d31");
+			.setColor(parseInt("2b2d31", 16));
 			await message.channel.send({embeds: [errorEmbed]});
 			
 			// Logs
@@ -221,7 +221,7 @@ export default class implements Event<typeof Events.MessageCreate> {
 							iconURL: this.client.user.displayAvatarURL(),
 						})
 						.setDescription(templateString(settings.greetingMessage, templateData))
-						.setColor("#2b2d31");
+						.setColor(parseInt("2b2d31", 16));
 					options.embeds = [greetingEmbed];
 				}
 

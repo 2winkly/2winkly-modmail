@@ -36,7 +36,7 @@ export async function closeThread({ thread, channel, silent }: CloseThreadOption
 					iconURL: channel.guild.iconURL() ?? undefined,
 				})
 				.setDescription(farewellMessage)
-				.setColor("#2b2d31");
+				.setColor(parseInt("2b2d31", 16));
 
 			options.embeds = [farewellEmbed];
 		}

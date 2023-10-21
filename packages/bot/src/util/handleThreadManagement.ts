@@ -227,7 +227,7 @@ export async function openThread(
 			iconURL: guild.iconURL() ?? undefined,
 		})
 		.setDescription(description)
-		.setColor("#2b2d31");
+		.setColor(parseInt("2b2d31", 16));
 		
 		const snippets = await prisma.snippet.findMany({ where: { guildId: guild.id } });
 		const matchingSnippet = snippets.find(s=>s.name.replace(/-/g, ` `)===tag?.name?.toLowerCase().replace(/[^\w\d]/g, ` `));
