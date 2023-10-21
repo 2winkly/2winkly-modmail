@@ -203,8 +203,6 @@ export default class implements Event<typeof Events.MessageCreate> {
 				return;
 			}
 
-			
-
 			if (settings.greetingMessage) {
 				const options: MessageCreateOptions = { allowedMentions: { roles: [] } };
 				const templateData = templateDataFromMember(member);
@@ -223,7 +221,7 @@ export default class implements Event<typeof Events.MessageCreate> {
 							iconURL: this.client.user.displayAvatarURL(),
 						})
 						.setDescription(templateString(settings.greetingMessage, templateData))
-						.setColor(Colors.NotQuiteBlack);
+						.setColor("#2b2d31");
 					options.embeds = [greetingEmbed];
 				}
 
