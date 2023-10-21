@@ -144,7 +144,7 @@ export default class implements Event<typeof Events.MessageCreate> {
 				iconURL: guild.iconURL() ?? undefined,
 			})
 			.setDescription(errorMessage)
-			.setColor(Colors.NotQuiteBlack);
+			.setColor("#2b2d31");
 			await message.channel.send({embeds: [errorEmbed]});
 			
 			// Logs
