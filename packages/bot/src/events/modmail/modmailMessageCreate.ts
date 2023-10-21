@@ -197,11 +197,13 @@ export default class implements Event<typeof Events.MessageCreate> {
 				simpleMode: settings.simpleMode,
 			});
 
+			await message.react('✅');
+
 			if (existing) {
 				return;
 			}
 
-			await message.react('✅');
+			
 
 			if (settings.greetingMessage) {
 				const options: MessageCreateOptions = { allowedMentions: { roles: [] } };
