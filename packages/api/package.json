@@ -12,7 +12,7 @@
 		"build": "tsc"
 	},
 	"engines": {
-		"node": ">=16.9.0"
+		"node": "19.9.0"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.12",
