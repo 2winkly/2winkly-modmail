@@ -14,7 +14,7 @@
 		"dev-build": "tsc --watch"
 	},
 	"engines": {
-		"node": ">=16.9.0"
+		"node": "19.9.0"
 	},
 	"devDependencies": {
 		"@types/common-tags": "^1.8.1",
