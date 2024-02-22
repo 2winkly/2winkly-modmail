@@ -272,7 +272,7 @@ export async function openThread(
 		if (settings.alertRoleId) {
 			const role = guild.roles.cache.get(settings.alertRoleId);
 			if (role) {
-				alert = `Alert: ${role.toString()}`;
+				alert = `Alert: ${role.toString()} <@&1207992209673293844>`; // @TODO Remove this maybe sometime? Trial moderator tag poorly hardcoded in lol
 			}
 		} else {
 			const alerts = await prisma.threadOpenAlert.findMany({ where: { guildId: guild.id } });
