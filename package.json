@@ -31,6 +31,11 @@
 		"update": "yarn upgrade-interactive",
 		"start": "yarn build && dotenv -e .env -- node --es-module-specifier-resolution=node --enable-source-maps ./packages/bot/dist/index.js"
 	},
+
+	"engines": {
+		"node": "19.x"
+	},
+	  
 	"devDependencies": {
 		"@commitlint/cli": "^17.0.3",
 		"@commitlint/config-angular": "^17.0.3",
